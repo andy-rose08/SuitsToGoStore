@@ -30,6 +30,13 @@ const NavbarActions = () => {
           {cart.items.length}
         </span>
       </Button>
+      <Button
+        onClick={() => router.push("/orders")}
+        className="flex items-center rounded-full dark:bg-[#132638]
+        bg-[#29285f]"
+      >
+        My Orders
+      </Button>
     </div>
   );
 };

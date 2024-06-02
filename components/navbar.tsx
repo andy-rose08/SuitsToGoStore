@@ -1,4 +1,5 @@
 import getCategories from "@/actions/get-categories";
+import { useUser } from "@clerk/nextjs";
 import { ClientNavbar } from "./client-navbar";
 
 export const revalidate = 0;

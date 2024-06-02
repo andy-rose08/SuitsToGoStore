@@ -1,0 +1,40 @@
+.order-tracker {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .states-container {
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
+  }
+  
+  .state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    margin-left: 20px;
+  }
+  
+  .state .state-number {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #504a4a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+  }
+  
+  .state .state-title {
+    text-align: center;
+  }
+  
+  .state.active .state-number {
+    background-color: #4caf50;
+    color: white;
+  }

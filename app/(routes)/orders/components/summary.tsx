@@ -1,3 +1,5 @@
+"use client";
+
 import axios from "axios";
 import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
@@ -6,7 +8,6 @@ import { useUser } from "@clerk/nextjs"
 import Button from "@/components/ui/button";
 import Currency from "@/components/ui/currency";
 import useCart from "@/hooks/use-cart";
-import deleteOrder from "@/actions/delete-order";
 
 const Summary = () => {
   const { user } = useUser(); 
@@ -19,40 +20,28 @@ const Summary = () => {
   }, 0);
 
   const onCheckout = async () => {
-    try{
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/checkout`,
-        {
-          items: items.map((item) => {
-            return {product_id: item.product.product_id, quantity: item.quantity}
-          }),
-          userId: user?.id
-        }
-      );
-      window.location = response.data.url;
-    } catch(error: any){
-      console.log(error)
-      if(error?.response.status === 404){
-        for(let item of error?.response.data.non_stock_items){
-          toast.error(`Item ${item.product.name} x ${item.quantity} no tiene suficiente stock`);
-        }
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/checkout`,
+      {
+        items: items.map((item) => {
+          return {product_id: item.product.product_id, quantity: item.quantity}
+        }),
+        userId: user?.id
       }
-    }
+    );
+    window.location = response.data.url;
   };
 
   useEffect(() => {
     if (searchParams.get("success")) {
-      toast.success("Pago completado, Pedido creado!");
+      toast.success("Payment Completed!");
       removeAll();
     }
+
     if (searchParams.get("canceled")) {
-      toast.error("Pedido no pagado, el pedido no se ha realizado!");
-      deleteOrder({
-        userId: user?.id,
-        orderId: searchParams.get("orderId")
-      });
+      toast.error("Something went wrong!");
     }
-  }, [user, searchParams, removeAll]);
+  }, [searchParams, removeAll]);
 
   return (
     <div

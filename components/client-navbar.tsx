@@ -7,8 +7,9 @@ import Container from "@/components/ui/container";
 import Link from "next/link";
 import Image from "next/image";
 import NavbarActions from "@/components/navbar-actions";
+import { UserButton } from "@clerk/nextjs";
 
-export const ClientNavbar = ({ data }: any) => {
+export const ClientNavbar = ({ data}: any) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
 
@@ -42,13 +43,13 @@ export const ClientNavbar = ({ data }: any) => {
             <div className="relative px-4 sm:px-6 lg:px-8 flex h-16 items-center">
               <Link href="/" className="ml-4 flex lg:ml-0 gap-x-2">
                 <Image
-                  className="pt-4"
+                  className="pt-1 pr-4"
                   src="/SuitsToGo-Logo.png"
                   alt="Logo"
-                  layout="fixed"
                   width={80}
                   height={60}
-                />
+                  style={{ height: '60px', width: 'auto' }}
+                  />
               </Link>
           <NavbarActions />
             </div>
@@ -61,6 +62,8 @@ export const ClientNavbar = ({ data }: any) => {
             } flex-col sm:flex-row sm:w-auto sm:mx-6 mb-2 sm:mb-0 `}
           />
         </div>
+         {/*} <ThemeToggle/>*/}
+         <UserButton afterSignOutUrl="/" />
       </div>
       <button
         className="sm:hidden block"

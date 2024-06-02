@@ -1,25 +1,38 @@
 "use client";
 
 import Image from "next/image";
-
-import { toast } from "react-hot-toast";
-
-import { X } from "lucide-react";
-
+import { X, Plus, Minus } from "lucide-react";
 import IconButton from "@/components/ui/icon-button";
+import Button from "@/components/ui/button";
 import Currency from "@/components/ui/currency";
+import { useRouter } from "next/navigation";
 import useCart from "@/hooks/use-cart";
-import { Product } from "@/types";
+import { OrderItemCart } from "@/types";
 
-interface CartItemProps {
-  data: Product;
+interface InterfaceCartItem {
+  data: OrderItemCart;
 }
 
-const CartItem: React.FC<CartItemProps> = ({ data }) => {
+const CartItem: React.FC<InterfaceCartItem> = ({ data }) => {
+  const router = useRouter();
   const cart = useCart();
 
+  const handleClick = () => {
+    router.push(`/product/${data?.product.product_id}`);
+  };
+
+  const decreaseItem = () => {
+    cart.decreaseItem({product: data.product, quantity: 1});
+    router.refresh();
+  };
+  
+  const increaseItem = () => {
+    cart.increaseItem({product: data.product, quantity: 1});
+    router.refresh();
+  };
+  
   const onRemove = () => {
-    cart.removeItem(data.product_id);
+    cart.removeItem(data.product.product_id);
   }
 
   return (
@@ -27,7 +40,10 @@ const CartItem: React.FC<CartItemProps> = ({ data }) => {
       <div className="relative h-24 w-24 rounded-md overflow-hidden sm:h-48 sm:w-48">
         <Image
           fill
-          src={data.images[0].url}
+          sizes="(max-width: 600px) 100vw, 
+          (max-width: 900px) 75vw, 
+          50vw"
+          src={data.product.images[0].url}
           alt="Product Image"
           className="object-cover object-center"
         />
@@ -37,18 +53,29 @@ const CartItem: React.FC<CartItemProps> = ({ data }) => {
           <IconButton onClick={onRemove} icon={<X size={15} />} />
         </div>
         <div className="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
-          <div className="flex justify-between">
+          <div className="flex justify-start">
             <p className="text-lg font-semibold text-[#252440] dark:text-white ">
-              {data.name}
+              {data.product.name}
             </p>
           </div>
-          <div className="mt-1 flex text-sm">
-            <p className="text-gray-500">{data.color.name}</p>
-            <p className="text-gray-500 ml-4 border-l border-gray-200 pl-4">
-              {data.size.name}
-            </p>
+          <div className="flex justify-start">
+            <p className="text-gray-500">{data.product.color.name}</p>
+            <p className="text-gray-500 ml-4 border-l border-gray-200 pl-4">{data.product.size.name}</p>
           </div>
-          <Currency value={data.price}/>
+          <div className="flex justify-between text-center">
+            <div className="m-3"> Precio: <Currency value={data.product.price}/></div>
+            <div className="m-3"> <IconButton onClick={decreaseItem} icon={<Minus size={15} />} /></div>
+            <div className="m-3"> Cantidad: {data.quantity}</div>
+            <div className="m-3"> <IconButton onClick={increaseItem} icon={<Plus size={15} />} /></div>
+            <div className="m-3"> Subtotal <Currency value={data.quantity * Number(data.product.price)}/></div>
+          </div>
+        </div>
+        <div className="flex justify-around">
+          <Button
+            onClick={handleClick}
+            className="mt-6">
+            Ir al producto
+          </Button>
         </div>
       </div>
     </li>

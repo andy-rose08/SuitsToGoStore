@@ -10,7 +10,7 @@ const HomePage = async () => {
   const products = await getProducts({
     isFeatured: true,
   });
-  const billboard = await getBillboard("cluk1tvre0001yu87yx3kfm0s");
+  const billboard = await getBillboard(String(process.env.BILLBOARD_ID));
 
   return (
     <Container>
