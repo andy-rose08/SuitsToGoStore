@@ -1,13 +1,12 @@
 "use client";
 import React, { useState } from "react";
-import { Product } from "@/types";
 import { Plus, Minus } from "lucide-react";
 import Currency from "@/components/ui/currency";
 import Button from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 import IconButton from "@/components/ui/icon-button";
 import { BriefcaseBusiness } from "lucide-react";
 import useCart from "@/hooks/use-cart";
+import { Product } from "@/types";
 
 interface InfoProps {
   product: Product;
@@ -15,7 +14,6 @@ interface InfoProps {
 
 const Info: React.FC<InfoProps> = ({ product }) => {
   const cart = useCart();
-  const router = useRouter();
   const [quantity, setQuantity] = useState<number>(cart.getItemQuantity(product.product_id));
 
   const onAddToCart = () => {

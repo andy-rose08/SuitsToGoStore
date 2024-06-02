@@ -4,10 +4,11 @@ import usePreviewModal from "@/hooks/use-preview-modal";
 import Modal from "@/components/ui/modal";
 import Gallery from "@/components/gallery";
 import Info from "@/components/info";
+import { Product } from "@/types";
 
 const PreviewModal = () => {
   const previewModal = usePreviewModal();
-  const product = usePreviewModal((state) => state.data);
+  const product: Product | undefined = usePreviewModal((state) => state.data);
 
   if (!product) return null;
   return (
@@ -17,7 +18,7 @@ const PreviewModal = () => {
           <Gallery images={product.images} />
         </div>
         <div className="sm:col-span-8 lg:col-span-7">
-          <Info data={product}/>
+          <Info product={product}/>
         </div>
       </div>
     </Modal>
